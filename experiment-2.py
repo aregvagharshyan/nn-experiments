@@ -24,9 +24,9 @@ x_true = np.random.randn(d)
 noise = 0.1 * np.random.randn(n)
 y = A @ x_true + noise
 
-# -----------------------
+# =========================
 # Functions
-# -----------------------
+# =========================
 def loss_i(i, x):
     return (A[i] @ x - y[i])**2
 
