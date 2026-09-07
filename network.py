@@ -1,3 +1,6 @@
+# [Supervised training of a CNN for MNIST classification, via manually implemented forward and backward propagation.]
+#
+
 import os
 os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
 os.environ["OMP_NUM_THREADS"] = "1"
@@ -8,9 +11,9 @@ warnings.filterwarnings('ignore')
 import numpy as np
 from tensorflow.keras.datasets import mnist
 
-# ======================
+# 
 # Setup
-# ======================
+# 
 
 np.random.seed(42)
 
@@ -25,9 +28,9 @@ def one_hot(y):
 y_train = one_hot(y_train)
 y_test = one_hot(y_test)
 
-# ======================
+# 
 # Init (xavier safe)
-# ======================
+#
 
 def xavier(n_in, n_out):
     limit = np.sqrt(6 / (n_in + n_out))
@@ -41,9 +44,9 @@ b1 = np.zeros((64,), dtype=np.float32)
 W2 = xavier(64, 10)
 b2 = np.zeros((10,), dtype=np.float32)
 
-# ======================
+# 
 # Activations
-# ======================
+# 
 
 def relu(x):
     return np.maximum(0, x)
@@ -53,9 +56,9 @@ def softmax(x):
     e = np.exp(x)
     return e / np.sum(e)
 
-# ======================
+# 
 # Layers
-# ======================
+# 
 
 def conv2d(x, f):
     h, w, _ = x.shape
@@ -81,15 +84,15 @@ def maxpool(x):
 
     return out
 
-# ======================
+#
 # Cache
-# ======================
+# 
 
 cache = None
 
-# ======================
+#
 # Forward (safe shapes)
-# ======================
+#
 
 def forward(x):
     global cache
@@ -110,17 +113,17 @@ def forward(x):
 
     return out
 
-# ======================
+# 
 # Loss
-# ======================
+# 
 
 def loss(pred, y):
     pred = np.clip(pred, 1e-7, 1-1e-7)
     return -np.sum(y * np.log(pred))
 
-# ======================
+#
 # Backward (fixed)
-# ======================
+# 
 
 def backward(pred, y, lr=0.001):
     global W1,b1,W2,b2,conv
@@ -156,17 +159,17 @@ def backward(pred, y, lr=0.001):
     for k in range(conv.shape[-1]):
         conv[:,:,:,k] -= lr * np.mean(dpc[:,:,k])
 
-# ======================
+# 
 # Batch training
-# ======================
+# 
 
 def get_batches(x, y, batch=32):
     for i in range(0, len(x), batch):
         yield x[i:i+batch], y[i:i+batch]
 
-# ======================
+# 
 # Train
-# ======================
+#
 
 lr = 0.001
 
@@ -186,9 +189,9 @@ for epoch in range(2):
 
     print("Epoch:", epoch, "Loss:", total)
 
-# ======================
+# 
 # Test
-# ======================
+# 
 
 correct = 0
 
