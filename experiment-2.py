@@ -1,3 +1,6 @@
+# [Stochastic optimization of a regularized linear model with an empirical Expected Smoothness analysis]
+#
+
 import os
 os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
 os.environ["OMP_NUM_THREADS"] = "1"
@@ -8,9 +11,9 @@ warnings.filterwarnings('ignore')
 import numpy as np
 import matplotlib.pyplot as plt
 
-# =========================
+# 
 # Data generation
-# =========================
+#
 
 np.random.seed(42)
 n, d = 2000, 100
@@ -24,9 +27,9 @@ x_true = np.random.randn(d)
 noise = 0.1 * np.random.randn(n)
 y = A @ x_true + noise
 
-# =========================
+# 
 # Functions
-# =========================
+# 
 def loss_i(i, x):
     return (A[i] @ x - y[i])**2
 
@@ -49,16 +52,16 @@ def full_grad(x):
     g += reg_grad(x)
     return g
 
-# =========================
+#
 # ES quantities
-# =========================
+# 
 
 def es_quantity(x):
     return np.mean([np.linalg.norm(grad_i(i, x))**2 for i in range(n)])
 
-# =========================
+# 
 # SGD run (store snapshots)
-# =========================
+#
 
 x = np.zeros(d)
 
@@ -84,9 +87,9 @@ snap_losses = np.array(snap_losses)
 snap_es = np.array(snap_es)
 snap_fg = np.array(snap_fg)
 
-# =========================
+# 
 # ES vs loss-gap check
-# =========================
+#
 
 f_star = np.min(snap_losses)
 loss_gap = snap_losses - f_star
@@ -97,9 +100,9 @@ corr2 = np.corrcoef(snap_es, snap_fg)[0, 1]
 print("Corr(ES, loss-gap):", corr1)
 print("Corr(ES, full-grad-norm):", corr2)
 
-# =========================
+# 
 # Plots
-# =========================
+# 
 
 plt.figure()
 plt.plot(loss_gap, label="f(x) - f*")
