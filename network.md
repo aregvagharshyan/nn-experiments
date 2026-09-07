@@ -45,38 +45,35 @@ Softmax
 - The convolutional layer has no bias. The dense layers include biases.
 
 ## Forward Propagation
-For an input image `x`:
+For an input image `x` chain is:
 
 ```text
-x
- → convolution
- → ReLU
- → max-pooling
- → flatten
- → dense layer
- → ReLU
- → dense output layer
- → softmax probabilities
+→ convolution
+→ ReLU
+→ max-pooling
+→ flatten
+→ dense layer
+→ ReLU
+→ dense output layer
+→ softmax probabilities
 ```
 
 The convolution uses valid cross-correlation, so a `28 × 28` image becomes `26 × 26` after applying a `3 × 3` filter.
 
 ## Loss Function
-
 The model uses categorical cross-entropy for the correct digit label `y`:
 
-```text
+```python
 L = -log(p_y)
 ```
 
 For softmax combined with cross-entropy, the output gradient is:
 
-```text
+```python
 dL/dlogits = probabilities - one_hot(label)
 ```
 
 ## Backward Propagation
-
 The gradient is propagated through the layers in reverse order:
 
 ```text
