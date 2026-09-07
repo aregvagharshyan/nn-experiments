@@ -1,3 +1,6 @@
+# [Stochastic optimization of a linear model]
+#
+
 import os
 os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
 os.environ["OMP_NUM_THREADS"] = "1"
@@ -8,9 +11,9 @@ warnings.filterwarnings('ignore')
 import numpy as np
 import matplotlib.pyplot as plt
 
-# =========================
+# 
 # Data generation
-# =========================
+#
 
 n = 2000
 d = 100
@@ -23,9 +26,9 @@ y = np.sign(A @ x_true + noise)
 y[y == 0] = 1
 
 
-# =========================
+#
 # Logistic loss + regularizer
-# =========================
+# 
 
 def sigmoid(z):
     return 1 / (1 + np.exp(-z))
@@ -53,9 +56,9 @@ def full_grad(x):
     return g / n
 
 
-# =========================
+# 
 # ES computation
-# =========================
+# 
 
 def ES(x):
     val = 0.0
@@ -65,18 +68,18 @@ def ES(x):
     return val / n
 
 
-# =========================
+# 
 # Entropy
-# =========================
+# 
 
 def entropy(p):
     p = np.clip(p, 1e-12, 1.0)
     return -np.sum(p * np.log(p))
 
 
-# =========================
+# 
 # Sampling strategies
-# =========================
+# 
 
 # Uniform
 def sample_uniform():
@@ -112,9 +115,9 @@ def sample_adaptive():
     return np.random.choice(n, p=p)
 
 
-# =========================
+# 
 # SGD experiment runner
-# =========================
+#
 
 def run(method="uniform", T=2000, gamma=1e-2):
     x = np.zeros(d)
@@ -162,25 +165,25 @@ def run(method="uniform", T=2000, gamma=1e-2):
     return ES_log, loss_log, grad_norm_log, entropy_log
 
 
-# =========================
+# 
 # Run experiments
-# =========================
+# 
 
 ES_u, loss_u, gn_u, ent_u = run("uniform")
 ES_i, loss_i, gn_i, ent_i = run("importance")
 ES_a, loss_a, gn_a, ent_a = run("adaptive")
 
-# =========================
-# helper for x-axis
-# =========================
+# 
+# Helper for x-axis
+# 
 
 def x_axis(log):
     return np.arange(len(log)) * 50
 
 
-# =========================
+# 
 # ES comparison plot
-# =========================
+# 
 
 plt.figure()
 plt.plot(x_axis(ES_u), ES_u, label='Uniform')
@@ -195,9 +198,9 @@ plt.grid(True)
 plt.show()
 
 
-# =========================
+#
 # Loss plot
-# =========================
+# 
 
 plt.figure()
 plt.plot(x_axis(loss_u), loss_u, label='Uniform')
@@ -212,9 +215,9 @@ plt.grid(True)
 plt.show()
 
 
-# =========================
+# 
 # Gradient norm plot
-# =========================
+# 
 
 plt.figure()
 plt.plot(x_axis(gn_u), gn_u, label='Uniform')
@@ -229,9 +232,9 @@ plt.grid(True)
 plt.show()
 
 
-# =========================
+# 
 # Entropy plot (key for adaptive collapse)
-# =========================
+# 
 
 plt.figure()
 plt.plot(x_axis(ent_u), ent_u, label='Uniform')
