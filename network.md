@@ -2,7 +2,7 @@
 
 Supervised training of a small convolutional neural network for MNIST digit classification, using manually implemented NumPy forward propagation and full backward propagation.
 
-## Architecture
+## Model Architecture
 
 ```text
 Input image
