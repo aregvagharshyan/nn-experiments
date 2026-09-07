@@ -45,7 +45,7 @@ Softmax
 - The convolutional layer has no bias. The dense layers include biases.
 
 ## Forward Propagation
-For an input image `x` chain is:
+For an input image `x` the chain is:
 
 ```text
 → convolution
