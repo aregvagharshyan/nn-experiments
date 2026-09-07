@@ -1,3 +1,6 @@
+# [Stochastic optimization of a regularized linear regression model with uniform, importance, and adaptive sampling.]
+#
+
 import os
 os.environ["VECLIB_MAXIMUM_THREADS"] = "1"
 os.environ["OMP_NUM_THREADS"] = "1"
@@ -8,9 +11,9 @@ warnings.filterwarnings('ignore')
 import numpy as np
 import matplotlib.pyplot as plt
 
-# ======================
+# 
 # Data generation
-# ======================
+# 
 
 np.random.seed(42)
 
@@ -21,9 +24,9 @@ A = np.random.randn(n, d)
 x_true = np.random.randn(d)
 y = A @ x_true + 0.1 * np.random.randn(n)
 
-# ======================
+#
 # Objective
-# ======================
+# 
 
 def f(x, A, y, lam=0.1):
     return np.mean((A @ x - y)**2) + lam * np.sum(x**2 / (1 + x**2))
@@ -34,9 +37,9 @@ def grad_i(x, a_i, y_i):
 def grad_r(x, lam=0.1):
     return lam * (2 * x / (1 + x**2)**2)
 
-# ======================
+# 
 # Uniform SGD
-# ======================
+#
 
 def train_uniform(A, y, K=5000, lr=1e-2, lam=0.1):
     n, d = A.shape
@@ -54,9 +57,9 @@ def train_uniform(A, y, K=5000, lr=1e-2, lam=0.1):
 
     return history
 
-# ======================
+# 
 # Importance sampling
-# ======================
+#
 
 def train_importance(A, y, K=5000, lr=1e-2, lam=0.1):
     n, d = A.shape
@@ -77,9 +80,9 @@ def train_importance(A, y, K=5000, lr=1e-2, lam=0.1):
 
     return history
 
-# ======================
+# 
 # Adaptive sampling
-# ======================
+#
 
 def train_stable_adaptive(A, y, K=5000, lr=1e-2, lam=0.1, beta=0.1, alpha=0.7):
     n, d = A.shape
@@ -117,9 +120,10 @@ def train_stable_adaptive(A, y, K=5000, lr=1e-2, lam=0.1, beta=0.1, alpha=0.7):
             history.append(f(x, A, y, lam))
 
     return history
-# ======================
+    
+# 
 # SGD run
-# ======================
+# 
 
 h_u = train_uniform(A, y)
 h_i = train_importance(A, y)
@@ -129,9 +133,9 @@ print("Final Uniform Loss:", h_u[-1])
 print("Final Importance Loss:", h_i[-1])
 print("Final Adaptive Loss:", h_a[-1])
 
-# ======================
+# 
 # Plot results
-# ======================
+# 
 
 plt.plot(h_u, label='Uniform SGD')
 plt.plot(h_i, label='Fixed Importance Sampling')
